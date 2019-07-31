@@ -17,15 +17,15 @@ class Handler(Thread):
         self.d = d
         self.v = v
 
-
     @staticmethod
-    def normOut(o,sd):
-        o=o.split('\n')
-        res=""
+    def normOut(o, sd):
+        o = o.split('\n')
+        res = ""
         for i in o:
-            if match('address',i):
-                res=i.split('address')[0].strip()
-        return "%s %s"%(sd,res)
+            if match('.* address .*', i):
+                res = i.split('address')[1].strip()
+                break
+        return "%s %s\n" % (sd, res)
 
     def run(self):
         while not EXFLAG:
@@ -38,7 +38,8 @@ class Handler(Thread):
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
                 if cmd.returncode == 0:
-                    stdout.write(self.normOut(cmd.stdout,"%s.%s"%(subdomain,self.d)))
+                    stdout.write(self.normOut(cmd.stdout, "%s.%s" %
+                                              (subdomain, self.d)))
                 if self.v:
                     stderr.write(cmd.stderr)
             else:
@@ -91,7 +92,6 @@ class dnslkp():
                              universal_newlines=True,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
-        print(cmd.returncode)
         if cmd.returncode == 0:
             return self.normalizeOutput(cmd.stdout)
         if self.v:
@@ -114,3 +114,21 @@ class dnslkp():
         EXFLAG = 1
         for t in THR:
             t.join()
+
+
+if __name__ == "__main__":
+    p = argparse.ArgumentParser(description='Fast DNS Lookup',
+                                epilog='Ejemplo: fdns -v -l -f subdomains.txt google.com')
+    p.add_argument('domain', help='Top-level domain')
+
+    p.add_argument('--lookup', '-l', default=False,
+                   help='Lookup Subdominios', action='store_true')
+    p.add_argument('--file', '-f', default=False,
+                   help='Ruta del archivo con subdominios')
+    p.add_argument('--verbose',
+                   '-v',
+                   default=False,
+                   help='Muestra salidas de error',
+                   action="store_true")
+    args = p.parse_args()
+    d = dnslkp(args.domain, args.lookup, args.verbose, args.file)
