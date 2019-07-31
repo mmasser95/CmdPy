@@ -31,6 +31,7 @@ class Handler(Thread):
                     stdout.write(cmd.stdout)
                 if self.v:
                     stderr.write(cmd.stderr)
+            qLock.release()
 
 
 class dnslkp():
