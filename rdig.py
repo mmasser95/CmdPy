@@ -51,7 +51,7 @@ class dnslkp():
         return False
 
     def checkRec(self):
-        cmd = subprocess.run(["dig", self.d, "any", "+nocmd", "+nocomments", "+nostat"],
+        cmd = subprocess.run(["dig", self.d, "any", "+nocmd", "+nocomments", "+nostat", "+noauthority"],
                              universal_newlines=True,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
@@ -64,14 +64,13 @@ class dnslkp():
         return False
 
     def checkLkp(self):
-        res=""
         for subdomain in self.s:
-            cmd = subprocess.run(["dig", "%s.%s"%(subdomain,self.d), "any", "+nocmd", "+nocomments", "+nostat"],
+            cmd = subprocess.run(["dig", "%s.%s"%(subdomain,self.d), "any", "+nocmd", "+nocomments", "+nostat", "+noauthority"],
                                  universal_newlines=True,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
             if cmd.returncode==0:
-                res="%s%s"%(res,self.normalizeOutput(cmd.stdout))
+                yield self.normalizeOutput(cmd.stdout)
             if self.v:
                 stderr.write(cmd.stderr)
-        return res
+        
