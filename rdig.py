@@ -37,7 +37,7 @@ class dnslkp():
     @staticmethod
     def normalizeOutput(o):
         #return "\n".join(findall(r'^[^;]((\w|\d).*)?$', o))
-        return "\n".join(findall(r'^[^;].*$', o))
+        return "\n".join(findall(r'[^;](\w|\d).*', o))
 
     @staticmethod
     def checkDig():
@@ -51,8 +51,10 @@ class dnslkp():
                              universal_newlines=True,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
+        print(cmd.returncode)
         if cmd.returncode == 0:
             return self.normalizeOutput(cmd.stdout)
+#            return cmd.stdout
         if self.v:
             stderr.write(cmd.stderr)
         return False
