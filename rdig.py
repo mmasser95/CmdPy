@@ -2,7 +2,7 @@
 import subprocess
 import argparse
 from sys import stdout, stderr
-from re import findall
+from re import match
 
 
 class dnslkp():
@@ -38,9 +38,7 @@ class dnslkp():
     def normalizeOutput(o):
         #return "\n".join(findall(r'^[^;]((\w|\d).*)?$', o))
 #        return "\n".join(findall(r'[^;]((\w|\d).*)?', o))
-        fl = [x.rstrip() for x in o.split('\n')]
-        rex=findall(r'[;].+[\w|\d].*', "\n".join(fl))
-        return "\n".join([x for x in fl if not x in rex])
+        return "\n".join([x.rstrip() for x in o.split('\n') if match(r'^[^;].*$',x)])
 
 
     @staticmethod
