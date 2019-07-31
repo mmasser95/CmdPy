@@ -17,10 +17,11 @@ class dnslkp():
             self.s = self.getSubdomains(l, self.v)
         elif l and f:
             self.s = self.getSubdomains(f, self.v)
-        stdout.write(self.checkRec())
+        stdout.write("%s\n"%self.checkRec())
         if l:
             for i in self.checkLkp():
-                stdout.write('%s\n'%i)
+                if len(i)>0:
+                    stdout.write('%s\n'%i)
 
     @staticmethod
     def getSubdomains(l, v):
