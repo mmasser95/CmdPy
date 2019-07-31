@@ -36,7 +36,8 @@ class dnslkp():
 
     @staticmethod
     def normalizeOutput(o):
-        return "\n".join(findall(r'^[^;]((\w|\d).*)?$', o))
+        #return "\n".join(findall(r'^[^;]((\w|\d).*)?$', o))
+        return "\n".join(findall(r'^[^;].*$', o))
 
     @staticmethod
     def checkDig():
