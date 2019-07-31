@@ -71,7 +71,7 @@ class dnslkp():
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
             if cmd.returncode==0:
-                res="%s\n%s"%(res,self.normalizeOutput(cmd.stdout))
+                res="%s%s"%(res,self.normalizeOutput(cmd.stdout))
             if self.v:
                 stderr.write(cmd.stderr)
         return res
