@@ -37,6 +37,7 @@ class Handler(Thread):
 
 class dnslkp():
     def __init__(self, d, l=False, v=False, f=False):
+        global EXFLAG
         if not self.checkDig():
             stderr.write('dnsutils required! Install it.')
             exit(1)
@@ -102,6 +103,7 @@ class dnslkp():
                 stderr.write(cmd.stderr) """
 
     def dolkp(self):
+        global EXFLAG
         for i in range(10):
             th = Handler(self.d, self.v)
             th.start()
