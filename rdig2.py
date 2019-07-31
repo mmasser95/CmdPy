@@ -17,6 +17,16 @@ class Handler(Thread):
         self.d = d
         self.v = v
 
+
+    @staticmethod
+    def normOut(o,sd):
+        o=o.split('\n')
+        res=""
+        for i in o:
+            if match('address',i):
+                res=i.split('address')[0].strip()
+        return "%s %s"%(sd,res)
+
     def run(self):
         while not EXFLAG:
             qLock.acquire()
@@ -28,7 +38,7 @@ class Handler(Thread):
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
                 if cmd.returncode == 0:
-                    stdout.write(cmd.stdout)
+                    stdout.write(self.normOut(cmd.stdout,"%s.%s"%(subdomain,self.d)))
                 if self.v:
                     stderr.write(cmd.stderr)
             else:
@@ -67,8 +77,6 @@ class dnslkp():
 
     @staticmethod
     def normalizeOutput(o):
-        # return "\n".join(findall(r'^[^;]((\w|\d).*)?$', o))
-        #        return "\n".join(findall(r'[^;]((\w|\d).*)?', o))
         return "\n".join([x.rstrip() for x in o.split('\n') if match(r'^[^;].*$', x)])
 
     @staticmethod
@@ -86,21 +94,9 @@ class dnslkp():
         print(cmd.returncode)
         if cmd.returncode == 0:
             return self.normalizeOutput(cmd.stdout)
-#            return cmd.stdout
         if self.v:
             stderr.write(cmd.stderr)
         return False
-
-    """ def checkLkp(self):
-        for subdomain in self.s:
-            cmd = subprocess.run(["dig", "%s.%s" % (subdomain, self.d), "any", "+nocmd", "+nocomments", "+nostat", "+noauthority"],
-                                 universal_newlines=True,
-                                 stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE)
-            if cmd.returncode == 0:
-                yield self.normalizeOutput(cmd.stdout)
-            if self.v:
-                stderr.write(cmd.stderr) """
 
     def dolkp(self):
         global EXFLAG
