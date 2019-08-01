@@ -4,7 +4,7 @@ import argparse
 from sys import stdout, stderr, stdin
 from threading import Thread
 from re import match
-from glob2 import glob
+from glob import glob
 from shutil import move
 from os import path
 
