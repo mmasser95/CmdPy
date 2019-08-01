@@ -23,7 +23,7 @@ class Migrate():
 
     def searchPath(self):
         aconfig = glob(path.join('etc', 'apache2',
-                                 'sites-enabled', "(.*)?%s(.*)?.conf" % self.w))[0]
+                                 'sites-enabled', "*%s*.conf" % self.w))[0]
         with open(aconfig,'r') as f:
             lines = f.readlines()
             self.dr = [i for i in lines if match(r'^[^#].*DocumentRoot.*', i)]
@@ -36,9 +36,9 @@ class Migrate():
     def checkDocumentRoot(self):
         if not path.exists(self.dr[0]):
             return False
-        elif not len(glob(path.join(self.dr[0],'/configuration.php'))):
+        elif not len(glob(path.join(self.dr[0],'configuration.php'))):
             return 'joomla'
-        elif not len(glob(path.join(self.dr[0],'(.*)?wp-config.php'))):
+        elif not len(glob(path.join(self.dr[0],'*wp-config.php'))):
             return 'wp'
         else:
             return 'prompt'
