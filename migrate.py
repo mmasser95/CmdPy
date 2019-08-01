@@ -29,9 +29,9 @@ class Migrate():
         with open(aconfig,'r') as f:
             print('Reading')
             lines = f.readlines()
-            self.dr = [i for i in lines if match(r'^[^#].*DocumentRoot.*', i)]
+            self.dr = [i for i in lines if match(r'.*[^#].*DocumentRoot.*', i)]
             self.sn = [j for j in lines if match(
-                r'^[^#].*[ServerName|ServerAlias].*', j)]
+                r'.*[^#].*[ServerName|ServerAlias].*', j)]
 
     def searchDb(self):
         pass
