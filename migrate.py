@@ -25,7 +25,9 @@ class Migrate():
     def searchPath(self):
         aconfig = glob("/%s/*%s*.conf" % (path.join('etc', 'apache2',
                                  'sites-available', ),self.w))[0]
+        print(aconfig)
         with open(aconfig,'r') as f:
+            print('Reading')
             lines = f.readlines()
             self.dr = [i for i in lines if match(r'^[^#].*DocumentRoot.*', i)]
             self.sn = [j for j in lines if match(
