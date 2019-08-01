@@ -23,8 +23,8 @@ class Migrate():
             self.runMysqlDump(self.t)
 
     def searchPath(self):
-        aconfig = glob(path.join('etc', 'apache2',
-                                 'sites-available', "*%s*.conf" % self.w))[0]
+        aconfig = glob("%s/*%s*.conf" % (path.join('etc', 'apache2',
+                                 'sites-available', ),self.w))[0]
         with open(aconfig,'r') as f:
             lines = f.readlines()
             self.dr = [i for i in lines if match(r'^[^#].*DocumentRoot.*', i)]
