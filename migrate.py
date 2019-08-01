@@ -14,6 +14,7 @@ class Migrate():
         self.w = w
         self.dr = []
         self.sn = []
+        self.searchPath()
         self.t=self.checkDocumentRoot()
         if self.t == False:
             exit(1)
