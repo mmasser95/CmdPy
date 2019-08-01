@@ -58,3 +58,5 @@ if __name__ == "__main__":
     p.add_argument('web', help='The web to migrate')
     args = p.parse_args()
     m = Migrate(args.web)
+    print(m.dr)
+    print(m.sn)
