@@ -23,7 +23,7 @@ class Migrate():
             self.runMysqlDump(self.t)
 
     def searchPath(self):
-        aconfig = glob("%s/*%s*.conf" % (path.join('etc', 'apache2',
+        aconfig = glob("/%s/*%s*.conf" % (path.join('etc', 'apache2',
                                  'sites-available', ),self.w))[0]
         with open(aconfig,'r') as f:
             lines = f.readlines()
